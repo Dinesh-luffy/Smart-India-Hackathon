@@ -4,33 +4,26 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # allows manual triggering
+  workflow_dispatch:
 
 jobs:
-  predict:
+  run-aqi-prediction:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+    - name: Checkout repo
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install pandas numpy requests folium joblib
 
-      - name: Run AQI prediction
-        run: python aqi_predict_function.py
-
-      - name: Commit prediction output
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-          git add outputs/   # change if your prediction is saved elsewhere
-          git commit -m "Update AQI prediction [skip ci]" || echo "No changes"
-          git push origin main
+    - name: Run AQI Prediction
+      run: |
+        python aqi_predict_function.py
