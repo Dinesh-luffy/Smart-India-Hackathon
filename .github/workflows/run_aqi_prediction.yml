@@ -1,42 +1,43 @@
 name: AQI Prediction
 
-# Trigger every 6 hours
+# Trigger workflow every 6 hours
 on:
   schedule:
-    - cron: "0 */6 * * *"  # every 6 hours
-  workflow_dispatch:        # manual trigger option
+    - cron: "0 */6 * * *"   # every 6 hours
+  workflow_dispatch:         # allow manual trigger
+
+# Give the workflow permission to write to the repo
+permissions:
+  contents: write
 
 jobs:
-  predict_aqi:
+  predict:
     runs-on: ubuntu-latest
 
     steps:
-    # 1️⃣ Checkout the repo
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-    # 2️⃣ Setup Python
-    - name: Setup Python 3.11
+    - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: "3.11"
+        python-version: 3.11
 
-    # 3️⃣ Install dependencies directly
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pandas numpy requests joblib folium
+        pip install pandas numpy joblib requests folium
 
-    # 4️⃣ Run AQI prediction script
     - name: Run AQI prediction
       run: |
         python aqi_predict_function.py
 
-    # 5️⃣ Commit and push the output file
-    - name: Commit and push prediction
+    - name: Commit and push results
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add latest_forecast.json
-        git commit -m "Update AQI prediction file" || echo "No changes to commit"
-        git push origin main
+        git commit -m "Update latest AQI forecast" || echo "No changes to commit"
+        git push
