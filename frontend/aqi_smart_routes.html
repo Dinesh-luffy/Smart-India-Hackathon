@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_8642afa17c58e5fccf560bee995c480d {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+</head>
+<body>
+    
+    <div style='position:fixed;top:10px;left:10px;z-index:9999;'><div style='font-family:Helvetica,Arial,sans-serif;font-size:13px;background:white;padding:8px;border-radius:8px;box-shadow:0 0 8px rgba(0,0,0,0.2);'><b style='font-size:15px'>Smart Route Comparison</b><br><small>Distance | ETA | Avg AQI | Score</small><hr style='margin:6px 0'/><table style='width:100%;border-collapse:collapse;text-align:left'><tr><th style='padding:4px'>#</th><th style='padding:4px'>Distance</th><th style='padding:4px'>ETA</th><th style='padding:4px'>Avg AQI</th><th style='padding:4px'>Score</th></tr><tr><td style='padding:4px'>1</td><td style='padding:4px'>4.75 km</td><td style='padding:4px'>5.9</td><td style='padding:4px;color:#FFA500;font-weight:700'>126.6</td><td style='padding:4px'>0.504</td></tr><tr><td style='padding:4px'>2</td><td style='padding:4px'>3.70 km</td><td style='padding:4px'>5.0</td><td style='padding:4px;color:#FFA500;font-weight:700'>132.1</td><td style='padding:4px'>0.504</td></tr><tr><td style='padding:4px'>3</td><td style='padding:4px'>4.25 km</td><td style='padding:4px'>5.6</td><td style='padding:4px;color:#FFA500;font-weight:700'>130.0</td><td style='padding:4px'>0.560</td></tr></table></div></div>
+    
+    <div style="position:fixed;bottom:40px;left:10px;width:220px;z-index:9999;
+                background:white;border-radius:8px;box-shadow:0 0 8px rgba(0,0,0,0.2);padding:8px;">
+      <b>AQI Legend & Recommended</b><br>
+      <div style="margin-top:6px"><span style='background:#2ECC71;padding:6px 8px;border-radius:4px;'></span>&nbsp;Clean (≤100)</div>
+      <div style="margin-top:6px"><span style='background:#FFA500;padding:6px 8px;border-radius:4px;'></span>&nbsp;Moderate (101–200)</div>
+      <div style="margin-top:6px"><span style='background:#FF3B30;padding:6px 8px;border-radius:4px;'></span>&nbsp;Unhealthy (>200)</div>
+      <div style="margin-top:6px"><b>🏆 Recommended route is bolded on map</b></div>
+    </div>
+    
+    
+            <div class="folium-map" id="map_8642afa17c58e5fccf560bee995c480d" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_8642afa17c58e5fccf560bee995c480d = L.map(
+                "map_8642afa17c58e5fccf560bee995c480d",
+                {
+                    center: [28.6221677, 77.22443595],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 13,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_8261e26fc0e02f7801767989b127c02d = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_8261e26fc0e02f7801767989b127c02d.addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            var heat_map_450f57e181f6f26d63f32ed85c19aa6e = L.heatLayer(
+                [[28.68241, 77.030469, 115], [28.6603346, 77.3572563, 151], [28.4227, 77.0667, 101], [28.582846, 77.234366, 142], [28.6341, 77.2005, 140], [28.628577, 77.241036, 131], [28.757294, 77.278792, 157], [28.4275, 77.1465, 12], [28.566827, 77.251418, 151], [28.733016, 77.17197, 132], [28.6683, 77.1167, 139], [28.815691, 77.152491, 106], [28.646233, 77.358075, 151], [28.528344, 77.189304, 123], [28.5898, 77.3101, 139], [28.576909, 77.075898, 161], [28.672114, 77.313832, 152], [28.710066, 77.24622, 124], [28.65155278, 77.15804167, 155], [28.700505, 77.165603, 144], [28.4501238, 77.0263051, 188], [28.499727, 77.267095, 139], [28.5648, 77.1744, 137], [28.636997, 77.172248, 144], [28.482888, 77.126748, 155], [28.7757959, 77.0462514, 134], [28.6701, 76.9254, 97], [28.531314, 77.270686, 127], [28.551729, 77.275037, 143], [28.589701, 77.221917, 155], [28.732743, 77.118788, 102], [28.749722, 77.116281, 112], [28.422681, 77.148944, 146], [28.6508, 77.3152, 101], [28.69572, 77.181295, 116], [28.820629, 77.101099, 114], [28.572714, 76.933433, 109], [28.6245479, 77.3577104, 154], [28.56923, 77.393848, 148], [28.5447608, 77.3231257, 145], [28.620171, 77.287705, 118], [28.612498, 77.237388, 110], [28.725646, 77.203384, 85]],
+                {
+  "minOpacity": 0.5,
+  "maxZoom": 12,
+  "radius": 25,
+  "blur": 12,
+}
+            );
+        
+    
+            heat_map_450f57e181f6f26d63f32ed85c19aa6e.addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            var circle_marker_e01b5d40f8767acf77db4be37b3ae4e9 = L.circleMarker(
+                [28.68241, 77.030469],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_e01b5d40f8767acf77db4be37b3ae4e9.bindTooltip(
+                `<div>
+                     Mundka, Delhi, Delhi, India — AQI: 115
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_78c23cc74490d3761626e91323aabe06 = L.circleMarker(
+                [28.6603346, 77.3572563],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_78c23cc74490d3761626e91323aabe06.bindTooltip(
+                `<div>
+                     Vasundhara, Ghaziabad, India — AQI: 151
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_85a05f8a54c6b7ed036a4aaeadfd5a29 = L.circleMarker(
+                [28.4227, 77.0667],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_85a05f8a54c6b7ed036a4aaeadfd5a29.bindTooltip(
+                `<div>
+                     Sector-51, Gurugram, India — AQI: 101
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7e29366714128c5afd6ac58470cf6877 = L.circleMarker(
+                [28.582846, 77.234366],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_7e29366714128c5afd6ac58470cf6877.bindTooltip(
+                `<div>
+                     Jawaharlal Nehru Stadium, Delhi, Delhi, India — AQI: 142
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7cd3c4a6dccbe2f836bfffb5253b8e4f = L.circleMarker(
+                [28.6341, 77.2005],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_7cd3c4a6dccbe2f836bfffb5253b8e4f.bindTooltip(
+                `<div>
+                     Mandir Marg, Delhi, Delhi, India — AQI: 140
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0707392dedd8d01e31bd2bc6909818ae = L.circleMarker(
+                [28.628577, 77.241036],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_0707392dedd8d01e31bd2bc6909818ae.bindTooltip(
+                `<div>
+                     ITO, Delhi, Delhi, India — AQI: 131
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f9a45cb90b8929e08ecf16e18681358c = L.circleMarker(
+                [28.757294, 77.278792],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_f9a45cb90b8929e08ecf16e18681358c.bindTooltip(
+                `<div>
+                     Loni, Ghaziabad, India — AQI: 157
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_068bc4e741ebf7f6d308929594d2326a = L.circleMarker(
+                [28.4275, 77.1465],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_068bc4e741ebf7f6d308929594d2326a.bindTooltip(
+                `<div>
+                     Teri Gram, Gurugram, India — AQI: 12
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_99078179ee5cb67d00f7d1f03642cf4f = L.circleMarker(
+                [28.566827, 77.251418],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_99078179ee5cb67d00f7d1f03642cf4f.bindTooltip(
+                `<div>
+                     PGDAV College, Sriniwaspuri, Delhi, Delhi, India — AQI: 151
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e28a8f72c696ba60746b5adabafd0c18 = L.circleMarker(
+                [28.733016, 77.17197],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_e28a8f72c696ba60746b5adabafd0c18.bindTooltip(
+                `<div>
+                     ITI Jahangirpuri, Delhi, Delhi, India — AQI: 132
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_aa8ff483f69e2e3d2eb1d94d2dea9855 = L.circleMarker(
+                [28.6683, 77.1167],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_aa8ff483f69e2e3d2eb1d94d2dea9855.bindTooltip(
+                `<div>
+                     Punjabi Bagh, Delhi, Delhi, India — AQI: 139
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6a377cc3e64c4b1fbcb11e7df5b0effe = L.circleMarker(
+                [28.815691, 77.152491],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_6a377cc3e64c4b1fbcb11e7df5b0effe.bindTooltip(
+                `<div>
+                     Alipur, Delhi, Delhi, India — AQI: 106
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_67168408c9ffc72472378b685ff2d8e1 = L.circleMarker(
+                [28.646233, 77.358075],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_67168408c9ffc72472378b685ff2d8e1.bindTooltip(
+                `<div>
+                     Indirapuram, Ghaziabad, India — AQI: 151
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e319742ddabf572af581560ada5ca8d3 = L.circleMarker(
+                [28.528344, 77.189304],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_e319742ddabf572af581560ada5ca8d3.bindTooltip(
+                `<div>
+                     Sri Auribindo Marg, Delhi, Delhi, India — AQI: 123
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a6f161726e72ec9766f20aaffb8f6337 = L.circleMarker(
+                [28.5898, 77.3101],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_a6f161726e72ec9766f20aaffb8f6337.bindTooltip(
+                `<div>
+                     Sector-1, Noida, India — AQI: 139
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_88c25a2c932c99b9354817a36af4669f = L.circleMarker(
+                [28.576909, 77.075898],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_88c25a2c932c99b9354817a36af4669f.bindTooltip(
+                `<div>
+                     National Institute of Malaria Research, Sector 8, Dwarka, Delhi, Delhi, India — AQI: 161
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a645843e5a0e9f3e43a9702a7823f3b5 = L.circleMarker(
+                [28.672114, 77.313832],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_a645843e5a0e9f3e43a9702a7823f3b5.bindTooltip(
+                `<div>
+                     ITI Shahdra, Jhilmil Industrial Area, Delhi, Delhi, India — AQI: 152
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2e69e747020e5bcae08b331cc7792f88 = L.circleMarker(
+                [28.710066, 77.24622],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_2e69e747020e5bcae08b331cc7792f88.bindTooltip(
+                `<div>
+                     Sonia Vihar Water Treatment Plant DJB, Delhi, Delhi, India — AQI: 124
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_19b4ade9627e242934e50e96a018ec9e = L.circleMarker(
+                [28.65155278, 77.15804167],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_19b4ade9627e242934e50e96a018ec9e.bindTooltip(
+                `<div>
+                     Shadipur, Delhi, Delhi, India — AQI: 155
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5f32ee3452615dc2076e6a80600e675f = L.circleMarker(
+                [28.700505, 77.165603],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_5f32ee3452615dc2076e6a80600e675f.bindTooltip(
+                `<div>
+                     Delhi Institute of Tool Engineering, Wazirpur, Delhi, Delhi, India — AQI: 144
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_76857b080811ed496204fa2c4c62817d = L.circleMarker(
+                [28.4501238, 77.0263051],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_76857b080811ed496204fa2c4c62817d.bindTooltip(
+                `<div>
+                     Vikas Sadan Gurgaon, Gurgaon, India — AQI: 188
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5e149e339b12b3625122f8293543d4fb = L.circleMarker(
+                [28.499727, 77.267095],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_5e149e339b12b3625122f8293543d4fb.bindTooltip(
+                `<div>
+                     Dr. Karni Singh Shooting Range, Delhi, Delhi, India — AQI: 139
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c7be013d37b2d0e3ad87ff9362669aff = L.circleMarker(
+                [28.5648, 77.1744],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_c7be013d37b2d0e3ad87ff9362669aff.bindTooltip(
+                `<div>
+                     R.K. Puram, Delhi, Delhi, India — AQI: 137
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_02a7ca5aa5555d6fa16e0622256f7259 = L.circleMarker(
+                [28.636997, 77.172248],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_02a7ca5aa5555d6fa16e0622256f7259.bindTooltip(
+                `<div>
+                     Pusa, Delhi, Delhi, India — AQI: 144
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3630215005a59765047066e0b63006a3 = L.circleMarker(
+                [28.482888, 77.126748],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_3630215005a59765047066e0b63006a3.bindTooltip(
+                `<div>
+                     Aya Nagar, Delhi, Delhi, India — AQI: 155
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9c2ff6c055965453a8e3cf2467bc8bec = L.circleMarker(
+                [28.7757959, 77.0462514],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_9c2ff6c055965453a8e3cf2467bc8bec.bindTooltip(
+                `<div>
+                     Pooth Khurd, Bawana, Delhi, Delhi, India — AQI: 134
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6df8136ad3550e3c6e5527b3435f7280 = L.circleMarker(
+                [28.6701, 76.9254],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_6df8136ad3550e3c6e5527b3435f7280.bindTooltip(
+                `<div>
+                     Arya Nagar, Bahadurgarh, India — AQI: 97
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ea463f2cea58c57fca6bc719a8dacf72 = L.circleMarker(
+                [28.531314, 77.270686],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_ea463f2cea58c57fca6bc719a8dacf72.bindTooltip(
+                `<div>
+                     DITE Okhla, Delhi, Delhi, India — AQI: 127
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bf69f40d6b0c2dbcbf61052a9dcca093 = L.circleMarker(
+                [28.551729, 77.275037],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_bf69f40d6b0c2dbcbf61052a9dcca093.bindTooltip(
+                `<div>
+                     CRRI Mathura Road, Delhi, Delhi, India — AQI: 143
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_30213871b8a19bca167e9730a6ca1366 = L.circleMarker(
+                [28.589701, 77.221917],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_30213871b8a19bca167e9730a6ca1366.bindTooltip(
+                `<div>
+                     Lodhi Road, Delhi, Delhi, India — AQI: 155
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_602c52a016ebca5b8092f46a8ccb7492 = L.circleMarker(
+                [28.732743, 77.118788],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_602c52a016ebca5b8092f46a8ccb7492.bindTooltip(
+                `<div>
+                     Shaheed Sukhdev College of Business Studies, Rohini, Delhi, Delhi, India — AQI: 102
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_de48a805ffd0b85692b52d7cbf94f484 = L.circleMarker(
+                [28.749722, 77.116281],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_de48a805ffd0b85692b52d7cbf94f484.bindTooltip(
+                `<div>
+                     DTU, Delhi, Delhi, India — AQI: 112
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3883bf67b0b09d80c75e1cb34a0f7a3a = L.circleMarker(
+                [28.422681, 77.148944],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_3883bf67b0b09d80c75e1cb34a0f7a3a.bindTooltip(
+                `<div>
+                     NISE Gwal Pahari, Gurugram, India — AQI: 146
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_86490ca4ced2bde672b699a76b4ab354 = L.circleMarker(
+                [28.6508, 77.3152],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_86490ca4ced2bde672b699a76b4ab354.bindTooltip(
+                `<div>
+                     Anand Vihar, Delhi, Delhi, India — AQI: 101
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_851daeccf43fe3dd970d119fdfd0d8a6 = L.circleMarker(
+                [28.69572, 77.181295],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_851daeccf43fe3dd970d119fdfd0d8a6.bindTooltip(
+                `<div>
+                     Satyawati College, Delhi, Delhi, India — AQI: 116
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4d3cb5871e77a5007baf18407f7bfa51 = L.circleMarker(
+                [28.820629, 77.101099],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_4d3cb5871e77a5007baf18407f7bfa51.bindTooltip(
+                `<div>
+                     Narela, Delhi, Delhi, India — AQI: 114
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7cdf13dfdddc2b81fa51ee3c9e2e2b9b = L.circleMarker(
+                [28.572714, 76.933433],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_7cdf13dfdddc2b81fa51ee3c9e2e2b9b.bindTooltip(
+                `<div>
+                     Bramprakash Ayurvedic Hospital, Najafgarh, Delhi, Delhi, India — AQI: 109
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c7cd07b7d8d6b3639fc7f89d82ca22df = L.circleMarker(
+                [28.6245479, 77.3577104],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_c7cd07b7d8d6b3639fc7f89d82ca22df.bindTooltip(
+                `<div>
+                     Sector - 62, Noida, India — AQI: 154
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ec861bae3b84f8491f8d37cbc0c0c125 = L.circleMarker(
+                [28.56923, 77.393848],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_ec861bae3b84f8491f8d37cbc0c0c125.bindTooltip(
+                `<div>
+                     Sector-116, Noida, India — AQI: 148
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_39da45c73c377538b8b1b4f36478574f = L.circleMarker(
+                [28.5447608, 77.3231257],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_39da45c73c377538b8b1b4f36478574f.bindTooltip(
+                `<div>
+                     Sector - 125, Noida, India — AQI: 145
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_efd07dc128c1050a47af187c2494a23b = L.circleMarker(
+                [28.620171, 77.287705],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_efd07dc128c1050a47af187c2494a23b.bindTooltip(
+                `<div>
+                     Mother Dairy Plant, Parparganj, Delhi, Delhi, India — AQI: 118
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bfee7e0796ed0bdfd71697ed0b6a3615 = L.circleMarker(
+                [28.612498, 77.237388],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_bfee7e0796ed0bdfd71697ed0b6a3615.bindTooltip(
+                `<div>
+                     Major Dhyan Chand National Stadium, Delhi, Delhi, India — AQI: 110
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6927702a58b04aa66bdc40d9aef90a43 = L.circleMarker(
+                [28.725646, 77.203384],
+                {"bubblingMouseEvents": true, "color": "#0000FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0000FF", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_6927702a58b04aa66bdc40d9aef90a43.bindTooltip(
+                `<div>
+                     Burari Crossing, Delhi, Delhi, India — AQI: 85
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_aa9014f66f291bcb1534a640eb6988d5 = L.polyline(
+                [[28.631392, 77.219571], [28.631412, 77.219572], [28.631446, 77.219574], [28.631589, 77.219581], [28.631678, 77.219582], [28.631707, 77.219388], [28.631771, 77.219223], [28.63187, 77.218972], [28.631959, 77.218846], [28.632107, 77.218685], [28.632257, 77.218574], [28.632324, 77.218537], [28.632371, 77.21851], [28.632495, 77.218461], [28.632624, 77.218429], [28.632787, 77.218414], [28.632937, 77.218424], [28.63295, 77.218425], [28.633109, 77.218463], [28.633197, 77.2185], [28.633262, 77.218528], [28.633405, 77.218616], [28.633601, 77.218798], [28.633744, 77.219], [28.633782, 77.219073], [28.633815, 77.219146], [28.633869, 77.219302], [28.633898, 77.219431], [28.633905, 77.219464], [28.633918, 77.219565], [28.633924, 77.219667], [28.633928, 77.21977], [28.633909, 77.219901], [28.633885, 77.220031], [28.633848, 77.220157], [28.633801, 77.220278], [28.633743, 77.220393], [28.633663, 77.220516], [28.633618, 77.22057], [28.63357, 77.220628], [28.633503, 77.220695], [28.633431, 77.220755], [28.633356, 77.220809], [28.633197, 77.220894], [28.63303, 77.22095], [28.632968, 77.220958], [28.632829, 77.220977], [28.632627, 77.220962], [28.632589, 77.220952], [28.63243, 77.220907], [28.632246, 77.220812], [28.632168, 77.220757], [28.631976, 77.2211], [28.631865, 77.221298], [28.631635, 77.221709], [28.631337, 77.222243], [28.631252, 77.222434], [28.631006, 77.222269], [28.630872, 77.222128], [28.63082, 77.222073], [28.630656, 77.221895], [28.630614, 77.221825], [28.630549, 77.221746], [28.630458, 77.22162], [28.630438, 77.221594], [28.630419, 77.22157], [28.630292, 77.221405], [28.630257, 77.221382], [28.63022, 77.221364], [28.630181, 77.221351], [28.630141, 77.221344], [28.630101, 77.221343], [28.63006, 77.221348], [28.630031, 77.221356], [28.630021, 77.221358], [28.629983, 77.221374], [28.629907, 77.221417], [28.629725, 77.221521], [28.629398, 77.221707], [28.629362, 77.221727], [28.629031, 77.221912], [28.628988, 77.221937], [28.628652, 77.222134], [28.627612, 77.222739], [28.627425, 77.222848], [28.62706, 77.223055], [28.626704, 77.223258], [28.626496, 77.223376], [28.626402, 77.223418], [28.626091, 77.223597], [28.626013, 77.223643], [28.625691, 77.223828], [28.625566, 77.2239], [28.625282, 77.224064], [28.625144, 77.224143], [28.625017, 77.224216], [28.62477, 77.224358], [28.624247, 77.224645], [28.624003, 77.224778], [28.623945, 77.22481], [28.623771, 77.224911], [28.623557, 77.225034], [28.623448, 77.225097], [28.623227, 77.225222], [28.622875, 77.225422], [28.622797, 77.225466], [28.622113, 77.22586], [28.621375, 77.226261], [28.620527, 77.226751], [28.620237, 77.226923], [28.620082, 77.227014], [28.620045, 77.227097], [28.620047, 77.227218], [28.620014, 77.227332], [28.619991, 77.227367], [28.619949, 77.227428], [28.619872, 77.227486], [28.619784, 77.227516], [28.619702, 77.227517], [28.619648, 77.227501], [28.619622, 77.227493], [28.619551, 77.227446], [28.619432, 77.227422], [28.619098, 77.227619], [28.618024, 77.228252], [28.617562, 77.228504], [28.617495, 77.228543], [28.616826, 77.228928], [28.61556, 77.229658], [28.61567, 77.229906], [28.616063, 77.230782], [28.61616, 77.231103], [28.616181, 77.231264], [28.616174, 77.231508], [28.616096, 77.231771], [28.615946, 77.232007], [28.61555, 77.232628], [28.615515, 77.232697], [28.61536, 77.233003], [28.615275, 77.233148], [28.615151, 77.233358], [28.614782, 77.234069], [28.614618, 77.234254], [28.614464, 77.234411], [28.614253, 77.23456], [28.614012, 77.234663], [28.61276, 77.23456], [28.612672, 77.234555], [28.612579, 77.23455], [28.611497, 77.234505], [28.611367, 77.234489], [28.611061, 77.234382], [28.610985, 77.234341], [28.610909, 77.234274], [28.610701, 77.234055], [28.610611, 77.233856], [28.610226, 77.232948], [28.61011, 77.232744], [28.610093, 77.232705], [28.609972, 77.232424], [28.6098, 77.232012], [28.609535, 77.231375], [28.60947, 77.231053], [28.609472, 77.230717], [28.609576, 77.230391], [28.609603, 77.230345], [28.610018, 77.22965], [28.610138, 77.229451], [28.610256, 77.229246], [28.610296, 77.229178], [28.610317, 77.229148], [28.610482, 77.22886], [28.610917, 77.228165], [28.611205, 77.227871], [28.611427, 77.227724], [28.611681, 77.227601], [28.612817, 77.227657], [28.612995, 77.227665]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 9}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            poly_line_aa9014f66f291bcb1534a640eb6988d5.bindTooltip(
+                `<div>
+                     Route 2: 4.75 km | 5.9 min | AQI 126.6
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_e6a78420b0722b56dd71c0f2310bc6db = L.marker(
+                [28.626091, 77.223597],
+                {
+}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            var icon_2e396a1e8d8b1936bf7366d22056f1d9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "darkgreen",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6ddec53b73d541a61f4c69b96f47cabe = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9df72a2bdfc3e3a24b66f7e0075f4bfd = $(`<div id="html_9df72a2bdfc3e3a24b66f7e0075f4bfd" style="width: 100.0%; height: 100.0%;">🏆 Recommended (score 0.504)</div>`)[0];
+                popup_6ddec53b73d541a61f4c69b96f47cabe.setContent(html_9df72a2bdfc3e3a24b66f7e0075f4bfd);
+            
+        
+
+        marker_e6a78420b0722b56dd71c0f2310bc6db.bindPopup(popup_6ddec53b73d541a61f4c69b96f47cabe)
+        ;
+
+        
+    
+    
+                marker_e6a78420b0722b56dd71c0f2310bc6db.setIcon(icon_2e396a1e8d8b1936bf7366d22056f1d9);
+            
+    
+            var poly_line_7f1d8828f728790e61890030dd52710f = L.polyline(
+                [[28.631392, 77.219571], [28.631412, 77.219572], [28.631446, 77.219574], [28.631589, 77.219581], [28.631678, 77.219582], [28.631707, 77.219388], [28.631771, 77.219223], [28.63187, 77.218972], [28.631959, 77.218846], [28.632107, 77.218685], [28.632257, 77.218574], [28.632324, 77.218537], [28.632371, 77.21851], [28.632495, 77.218461], [28.632624, 77.218429], [28.632787, 77.218414], [28.632937, 77.218424], [28.63295, 77.218425], [28.633109, 77.218463], [28.633197, 77.2185], [28.633262, 77.218528], [28.633405, 77.218616], [28.633601, 77.218798], [28.633744, 77.219], [28.633782, 77.219073], [28.633815, 77.219146], [28.633869, 77.219302], [28.633898, 77.219431], [28.633905, 77.219464], [28.633918, 77.219565], [28.633924, 77.219667], [28.633928, 77.21977], [28.633909, 77.219901], [28.633885, 77.220031], [28.633848, 77.220157], [28.633801, 77.220278], [28.633743, 77.220393], [28.633663, 77.220516], [28.633618, 77.22057], [28.63357, 77.220628], [28.633503, 77.220695], [28.633431, 77.220755], [28.633356, 77.220809], [28.633197, 77.220894], [28.63303, 77.22095], [28.632968, 77.220958], [28.632829, 77.220977], [28.632627, 77.220962], [28.632589, 77.220952], [28.63243, 77.220907], [28.632246, 77.220812], [28.632168, 77.220757], [28.631976, 77.2211], [28.631865, 77.221298], [28.631635, 77.221709], [28.631337, 77.222243], [28.631252, 77.222434], [28.631006, 77.222269], [28.630872, 77.222128], [28.63082, 77.222073], [28.630656, 77.221895], [28.630614, 77.221825], [28.630549, 77.221746], [28.630458, 77.22162], [28.630438, 77.221594], [28.630419, 77.22157], [28.630292, 77.221405], [28.630205, 77.221227], [28.630128, 77.221043], [28.630083, 77.220917], [28.630061, 77.220855], [28.630048, 77.220815], [28.629995, 77.220652], [28.629974, 77.220533], [28.629916, 77.220203], [28.629906, 77.220082], [28.629889, 77.219868], [28.629884, 77.219799], [28.629882, 77.219766], [28.629863, 77.219718], [28.629838, 77.219676], [28.629806, 77.219639], [28.629769, 77.219608], [28.629728, 77.219586], [28.629685, 77.219571], [28.629591, 77.219565], [28.628985, 77.219527], [28.628629, 77.219504], [28.628366, 77.219487], [28.628342, 77.219485], [28.628287, 77.219483], [28.628173, 77.219477], [28.627349, 77.219422], [28.627338, 77.219421], [28.627157, 77.21941], [28.627102, 77.219406], [28.626655, 77.219369], [28.626586, 77.219369], [28.626435, 77.219364], [28.626307, 77.21934], [28.626213, 77.21933], [28.62601, 77.219324], [28.625544, 77.219296], [28.625396, 77.219287], [28.624673, 77.219243], [28.624613, 77.219239], [28.624474, 77.219231], [28.624338, 77.219223], [28.624264, 77.219218], [28.624102, 77.219208], [28.623115, 77.219148], [28.622464, 77.219109], [28.622058, 77.219084], [28.621546, 77.219053], [28.621285, 77.219038], [28.620719, 77.219007], [28.620411, 77.218985], [28.620387, 77.219073], [28.620352, 77.219155], [28.620307, 77.219231], [28.620252, 77.219299], [28.620197, 77.21935], [28.620138, 77.219392], [28.620074, 77.219425], [28.620007, 77.219448], [28.619942, 77.219461], [28.619876, 77.219465], [28.619811, 77.219459], [28.619722, 77.219489], [28.61959, 77.219562], [28.619477, 77.219637], [28.619412, 77.219752], [28.619345, 77.21987], [28.619282, 77.219983], [28.619001, 77.220467], [28.61887, 77.220693], [28.618544, 77.221255], [28.618507, 77.221318], [28.61826, 77.221757], [28.61811, 77.222023], [28.618083, 77.222072], [28.617981, 77.222247], [28.617851, 77.222468], [28.617732, 77.22267], [28.617652, 77.222815], [28.617421, 77.223228], [28.617215, 77.223582], [28.617021, 77.223915], [28.616755, 77.224388], [28.61671, 77.224467], [28.616644, 77.224572], [28.616602, 77.224685], [28.616593, 77.224752], [28.616603, 77.224807], [28.616641, 77.224884], [28.616649, 77.224918], [28.61666, 77.224969], [28.61666, 77.225044], [28.616645, 77.225117], [28.616606, 77.2252], [28.616568, 77.225245], [28.616548, 77.225268], [28.616475, 77.225314], [28.616394, 77.225334], [28.616285, 77.225317], [28.61621, 77.225271], [28.616162, 77.225228], [28.616144, 77.2252], [28.61612, 77.225161], [28.616096, 77.22503], [28.616051, 77.225027], [28.615991, 77.225024], [28.615922, 77.225019], [28.615554, 77.224997], [28.615237, 77.224977], [28.614684, 77.224943], [28.614462, 77.22493], [28.614138, 77.224909], [28.613635, 77.224879], [28.613227, 77.224855], [28.613136, 77.224848], [28.613021, 77.227666]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            poly_line_7f1d8828f728790e61890030dd52710f.bindTooltip(
+                `<div>
+                     Route 3: 3.70 km | 5.0 min | AQI 132.1
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_8e75e5118b6ac7e680406945de2e4832 = L.polyline(
+                [[28.631392, 77.219571], [28.631412, 77.219572], [28.631446, 77.219574], [28.631589, 77.219581], [28.631678, 77.219582], [28.631707, 77.219388], [28.631771, 77.219223], [28.63187, 77.218972], [28.631959, 77.218846], [28.632107, 77.218685], [28.632257, 77.218574], [28.632324, 77.218537], [28.632371, 77.21851], [28.632495, 77.218461], [28.632624, 77.218429], [28.632787, 77.218414], [28.632937, 77.218424], [28.63295, 77.218425], [28.633109, 77.218463], [28.633197, 77.2185], [28.633262, 77.218528], [28.633405, 77.218616], [28.633601, 77.218798], [28.633744, 77.219], [28.633782, 77.219073], [28.633815, 77.219146], [28.633869, 77.219302], [28.633898, 77.219431], [28.633905, 77.219464], [28.633918, 77.219565], [28.633924, 77.219667], [28.633928, 77.21977], [28.633909, 77.219901], [28.633885, 77.220031], [28.633848, 77.220157], [28.633801, 77.220278], [28.633743, 77.220393], [28.633663, 77.220516], [28.633618, 77.22057], [28.63357, 77.220628], [28.633503, 77.220695], [28.633431, 77.220755], [28.633356, 77.220809], [28.633197, 77.220894], [28.63303, 77.22095], [28.632968, 77.220958], [28.632829, 77.220977], [28.632627, 77.220962], [28.632589, 77.220952], [28.63243, 77.220907], [28.632246, 77.220812], [28.632168, 77.220757], [28.631976, 77.2211], [28.631865, 77.221298], [28.631635, 77.221709], [28.631337, 77.222243], [28.631252, 77.222434], [28.631006, 77.222269], [28.630872, 77.222128], [28.63082, 77.222073], [28.630656, 77.221895], [28.630614, 77.221825], [28.630549, 77.221746], [28.630458, 77.22162], [28.630438, 77.221594], [28.630419, 77.22157], [28.630292, 77.221405], [28.630205, 77.221227], [28.630128, 77.221043], [28.630083, 77.220917], [28.630061, 77.220855], [28.630048, 77.220815], [28.629995, 77.220652], [28.629974, 77.220533], [28.629916, 77.220203], [28.629906, 77.220082], [28.629889, 77.219868], [28.629884, 77.219799], [28.629882, 77.219766], [28.629863, 77.219718], [28.629838, 77.219676], [28.629806, 77.219639], [28.629769, 77.219608], [28.629728, 77.219586], [28.629685, 77.219571], [28.629591, 77.219565], [28.628985, 77.219527], [28.628629, 77.219504], [28.628366, 77.219487], [28.628342, 77.219485], [28.628287, 77.219483], [28.628173, 77.219477], [28.627349, 77.219422], [28.627338, 77.219421], [28.627157, 77.21941], [28.627102, 77.219406], [28.626655, 77.219369], [28.626586, 77.219369], [28.626435, 77.219364], [28.626307, 77.21934], [28.626213, 77.21933], [28.62601, 77.219324], [28.625544, 77.219296], [28.625396, 77.219287], [28.624673, 77.219243], [28.624613, 77.219239], [28.624474, 77.219231], [28.624338, 77.219223], [28.624264, 77.219218], [28.624102, 77.219208], [28.623115, 77.219148], [28.622464, 77.219109], [28.622058, 77.219084], [28.621546, 77.219053], [28.621285, 77.219038], [28.620719, 77.219007], [28.620411, 77.218985], [28.620387, 77.219073], [28.620352, 77.219155], [28.620307, 77.219231], [28.620252, 77.219299], [28.620197, 77.21935], [28.620138, 77.219392], [28.620074, 77.219425], [28.620007, 77.219448], [28.619942, 77.219461], [28.619876, 77.219465], [28.619811, 77.219459], [28.619722, 77.219489], [28.61959, 77.219562], [28.619477, 77.219637], [28.619412, 77.219752], [28.619345, 77.21987], [28.619282, 77.219983], [28.619001, 77.220467], [28.61887, 77.220693], [28.618544, 77.221255], [28.618507, 77.221318], [28.61826, 77.221757], [28.61811, 77.222023], [28.618083, 77.222072], [28.617981, 77.222247], [28.617851, 77.222468], [28.617732, 77.22267], [28.617652, 77.222815], [28.617421, 77.223228], [28.617215, 77.223582], [28.617021, 77.223915], [28.616755, 77.224388], [28.61671, 77.224467], [28.616644, 77.224572], [28.616602, 77.224685], [28.616593, 77.224752], [28.616603, 77.224807], [28.616641, 77.224884], [28.616649, 77.224918], [28.61666, 77.224969], [28.61666, 77.225044], [28.616645, 77.225117], [28.616606, 77.2252], [28.616568, 77.225245], [28.616548, 77.225268], [28.616475, 77.225314], [28.616394, 77.225334], [28.616285, 77.225317], [28.61621, 77.225271], [28.616162, 77.225228], [28.616144, 77.2252], [28.61612, 77.225161], [28.616096, 77.22503], [28.616051, 77.225027], [28.615991, 77.225024], [28.615922, 77.225019], [28.615554, 77.224997], [28.615237, 77.224977], [28.614684, 77.224943], [28.614462, 77.22493], [28.614138, 77.224909], [28.613635, 77.224879], [28.613227, 77.224855], [28.613136, 77.224848], [28.613065, 77.224842], [28.61268, 77.22482], [28.612504, 77.224809], [28.612093, 77.224784], [28.611818, 77.224767], [28.611705, 77.22476], [28.6111, 77.224723], [28.610434, 77.224682], [28.61031, 77.224675], [28.610242, 77.224684], [28.610168, 77.224705], [28.610156, 77.22474], [28.61012, 77.224804], [28.610161, 77.224995], [28.610191, 77.225062], [28.611035, 77.226937], [28.611074, 77.227008], [28.611209, 77.227257], [28.611318, 77.22739], [28.611456, 77.22748], [28.611681, 77.227601], [28.612817, 77.227657], [28.612995, 77.227665]],
+                {"bubblingMouseEvents": true, "color": "#FFA500", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#FFA500", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            poly_line_8e75e5118b6ac7e680406945de2e4832.bindTooltip(
+                `<div>
+                     Route 1: 4.25 km | 5.6 min | AQI 130.0
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_e65693b57fa015f42d70a58d3722db86 = L.marker(
+                [28.6314022, 77.2193791],
+                {
+}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            var icon_d8b89e30664a1368f4d3b880d5fef215 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_61bc8a614853ac0d8aa1651fdebba2b6 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e434f97663949d599ce66ff2e0d51899 = $(`<div id="html_e434f97663949d599ce66ff2e0d51899" style="width: 100.0%; height: 100.0%;">START</div>`)[0];
+                popup_61bc8a614853ac0d8aa1651fdebba2b6.setContent(html_e434f97663949d599ce66ff2e0d51899);
+            
+        
+
+        marker_e65693b57fa015f42d70a58d3722db86.bindPopup(popup_61bc8a614853ac0d8aa1651fdebba2b6)
+        ;
+
+        
+    
+    
+                marker_e65693b57fa015f42d70a58d3722db86.setIcon(icon_d8b89e30664a1368f4d3b880d5fef215);
+            
+    
+            var marker_a7aae2bf9ccf91cd41b2094bb4dac789 = L.marker(
+                [28.6129332, 77.2294928],
+                {
+}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            var icon_981501c5eb4dd3cab2b82e84bde7e398 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_628ad2740158682102d9bd9360a7ebb1 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_484f13ed16654d364846f4a2a655ab7b = $(`<div id="html_484f13ed16654d364846f4a2a655ab7b" style="width: 100.0%; height: 100.0%;">DESTINATION</div>`)[0];
+                popup_628ad2740158682102d9bd9360a7ebb1.setContent(html_484f13ed16654d364846f4a2a655ab7b);
+            
+        
+
+        marker_a7aae2bf9ccf91cd41b2094bb4dac789.bindPopup(popup_628ad2740158682102d9bd9360a7ebb1)
+        ;
+
+        
+    
+    
+                marker_a7aae2bf9ccf91cd41b2094bb4dac789.setIcon(icon_981501c5eb4dd3cab2b82e84bde7e398);
+            
+    
+            var circle_marker_385b832a99fd661e17513db8d20e59d1 = L.circleMarker(
+                [28.58, 77.25],
+                {"bubblingMouseEvents": true, "color": "gray", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "gray", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_385b832a99fd661e17513db8d20e59d1.bindTooltip(
+                `<div>
+                     🏭 Emission: 120
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b70648a5cf71d60e86274c9286ad9f90 = L.circleMarker(
+                [28.72, 77.12],
+                {"bubblingMouseEvents": true, "color": "gray", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "gray", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_b70648a5cf71d60e86274c9286ad9f90.bindTooltip(
+                `<div>
+                     🏭 Emission: 200
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_851f3a25ffaf725c7b8d36d59610b5dd = L.circleMarker(
+                [28.64, 77.22],
+                {"bubblingMouseEvents": true, "color": "gray", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "gray", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_8642afa17c58e5fccf560bee995c480d);
+        
+    
+            circle_marker_851f3a25ffaf725c7b8d36d59610b5dd.bindTooltip(
+                `<div>
+                     🏭 Emission: 150
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>

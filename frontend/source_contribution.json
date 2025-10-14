@@ -1,0 +1,22 @@
+[
+    {
+        "Region": "Punjab",
+        "Influence_%": 32.6,
+        "Reason": "High stubble burning detected across northern Punjab \ud83d\ude9c\ud83d\udd25"
+    },
+    {
+        "Region": "Rajasthan",
+        "Influence_%": 27.7,
+        "Reason": "Dust and boundary-layer transport during dry periods \ud83c\udf35"
+    },
+    {
+        "Region": "Haryana",
+        "Influence_%": 19.9,
+        "Reason": "Consistent fire counts and wind drift toward Delhi \ud83c\udf2c"
+    },
+    {
+        "Region": "UP_West",
+        "Influence_%": 19.8,
+        "Reason": "Moderate stubble and industrial impact near NCR \ud83c\udfed"
+    }
+]
